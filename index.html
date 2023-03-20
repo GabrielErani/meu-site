@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Você é gay?</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-image: linear-gradient(to left, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #FFFFFF;
+            display: none;
+        }
+
+        .container, .name-form {
+            width: 80%;
+            height: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        input[type="text"] {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            color: white;
+            background-color: #B565A7;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+            transition: all 0.2s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            background-color: #8B3D88;
+        }
+
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            color: white;
+            background-color: #B565A7;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background-color: #8B3D88;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 5px rgba(0, 0, 0, 0.25);
+        }
+
+        #yes-button {
+            background-color: #1DDDE8;
+        }
+
+        #yes-button:hover {
+            background-color: #1DB5C8;
+        }
+
+        #no-button {
+            position: absolute;
+        }
+
+        #message {
+            display: none;
+            font-size: 36px;
+            color: #FFFFFF;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 30px 50px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 28px;
+            }
+
+            .container, .name-form {
+                width: 90%;
+                height: 60%;
+            }
+
+            input[type="text"], button {
+                font-size: 16px;
+                padding: 8px 16px;
+                margin: 8px;
+            }
+
+            #message {
+                font-size: 24px;
+                padding: 20px 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1 id="name-question">Qual é o seu nome?</h1>
+    <form class="name-form">
+        <input type="text" id="name-input" placeholder="Insira seu nome">
+        <button type="submit">Enviar</button>
+    </form>
+    <div class="container" style="display: none;">
+        <h1 id="gay-question" style="display: none;">Você é gay?</h1>
+        <button id="yes-button">Sim</button>
+        <button id="no-button">Não</button>
+    </div>
+    <p id="message"></p>
+    <script>
+        $(document).ready(function () {
+            $('#name-question').css('display', 'block');
+    
+            const submitName = (event) => {
+                event.preventDefault();
+                const userName = $('#name-input').val().trim();
+    
+                if (userName.length > 0) {
+                    $('#name-question').hide();
+                    $('.name-form').hide();
+                    $('#gay-question').css('display', 'block');
+                    $('.container').css('display', 'flex');
+                }
+            };
+    
+            $('.name-form').on('submit', submitName);
+            $('.name-form button').on('click', submitName);
+    
+            $('#yes-button').on('click', () => {
+                const userName = $('#name-input').val();
+                $('#message').text(`Há, eu já sabia ${userName}.`);
+                $('#message').css('display', 'block');
+                $('.container').hide();
+                $('#gay-question').hide();
+            });
+    
+            const moveNoButton = (event) => {
+                event.preventDefault();
+                const containerRect = $('.container')[0].getBoundingClientRect();
+                const buttonWidth = $('#no-button')[0].offsetWidth;
+                const buttonHeight = $('#no-button')[0].offsetHeight;
+    
+                const newX = Math.random() * (containerRect.width - buttonWidth);
+                const newY = Math.random() * (containerRect.height - buttonHeight);
+    
+                $('#no-button').css('left', `${newX}px`);
+                $('#no-button').css('top', `${newY}px`);
+            };
+    
+            $('#no-button').on('mouseover', moveNoButton);
+            $('#no-button').on('touchend', moveNoButton);
+        });
+    </script>
+    
+</body>
+</html>
+
